@@ -1,3 +1,5 @@
 # My Web Browser
 
-This web browser is written on electron js.
+
+
+This is small application written on electronJS
