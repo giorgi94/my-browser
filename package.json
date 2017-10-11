@@ -1,0 +1,14 @@
+{
+  "name": "video-browser",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.6.11"
+  }
+}

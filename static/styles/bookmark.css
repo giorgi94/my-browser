@@ -1,0 +1,63 @@
+.bookmark-modal {
+    position: absolute;
+    width: 70%;
+    background-color: #fff;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50px;
+}
+
+.bookmark-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.bookmark-buttons {
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.bookmark-buttons .control-button {
+    flex: 1;
+}
+
+
+.bookmark-json {
+    flex: 1;
+    
+}
+
+.bookmark-inputs {
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.bookmark-inputs input {
+    flex: 1;
+    margin-right: 5px;
+}
+
+
+.bookmark-json textarea {
+    width: 100%;
+    height: 300px;
+}
+
+.control-button {
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 14px;
+    color: #83949b;
+    min-width: 100px;
+    margin-left: 6px;
+    border-bottom: 1px solid #83949b;
+    cursor: pointer;
+}
+
+.control-button:hover {
+    color: #406a7f!important;
+    border-bottom-color: #406a7f!important;
+}
