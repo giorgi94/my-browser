@@ -1,62 +1,67 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
 
+const { ipcMain } = require('electron')
+
+
+
 
 const template = [
-  {
-    label: 'Edit',
-    submenu: [
-      {role: 'undo'},
-      {role: 'redo'},
-      {type: 'separator'},
-      {role: 'cut'},
-      {role: 'copy'},
-      {role: 'paste'},
-      {role: 'pasteandmatchstyle'},
-      {role: 'delete'},
-      {role: 'selectall'}
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      {role: 'reload'},
-      {role: 'forcereload'},
-      {role: 'toggledevtools'},
-    ]
-  },
-  {
-    role: 'window',
-    submenu: [
-      {role: 'minimize'},
-      {role: 'close'}
-    ]
-  }
+    {
+        label: 'File',
+        submenu: [
+            { role: 'reload' },
+            { role: 'forcereload' },
+            { type: 'separator' },
+            { role: 'toggledevtools' },
+            { type: 'separator' },
+            { role: 'close' }
+        ]
+    },
 ]
 
 
 
 const menu = Menu.buildFromTemplate(template)
 
-function createWindow () {
-	let mainWindow = new BrowserWindow({
-		width: 800, 
-		height: 600,
-		fullscreenable : false
-  	});
+let mainWindow = null
 
+
+
+function createWindow() {
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        fullscreenable: false,
+
+        webPreferences: {
+            webviewTag: true,
+            nodeIntegration: true,
+        }
+    });
 
     mainWindow.setMenu(menu);
-  	
+    mainWindow.setMenuBarVisibility(false)
 
-	mainWindow.loadURL(`file://${__dirname}/index.html`); 
-	
-	mainWindow.on('closed', () => { mainWindow = null; });
+
+    mainWindow.loadURL(`file://${__dirname}/ui.html`);
+
+    mainWindow.on('closed', () => { mainWindow = null; });
+
+    mainWindow.webContents.on('new-window', (e) => {
+        event.preventDefault()
+    })
+
+
+    ipcMain.on('webview-event', (event, msg) => {
+        mainWindow.webContents.send('webview-event', msg)
+    })
+
 }
 
 app.on('ready', createWindow);
 
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
     app.quit();
 });

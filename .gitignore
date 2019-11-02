@@ -1,9 +1,18 @@
-# dependencies
-node_modules
-
-# logs
-npm-debug.log
-
-
+/__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+*.desktop
 
 .DS_Store
+
+.vscode/
+cache/
+logs/
+dist/
+env/
+
+node_modules
+npm-debug.log
+bower_components
+package-lock.json
