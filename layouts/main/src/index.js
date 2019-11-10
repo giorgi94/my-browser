@@ -1,13 +1,15 @@
+const { dirname, normalize, join } = require('path')
 const Vue = require('vue/dist/vue');
 const App = require('./App')
-
 
 const { ipcRenderer } = require('electron')
 
 
+window.$ROOT = normalize(join(__dirname, '../../../'))
 
-window.browser = document.querySelector('webview')
-browser.src = "https://www.youtube.com/"
+
+// window.browser = document.querySelector('webview')
+// browser.src = "https://www.youtube.com/"
 
 
 

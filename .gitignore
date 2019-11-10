@@ -12,7 +12,13 @@ logs/
 dist/
 env/
 
+data/
+
 node_modules
 npm-debug.log
 bower_components
 package-lock.json
+
+
+layouts/*
+!layouts/main

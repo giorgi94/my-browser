@@ -44,7 +44,7 @@ function createWindow() {
     mainWindow.setMenuBarVisibility(false)
 
 
-    mainWindow.loadURL(`file://${__dirname}/ui.html`);
+    mainWindow.loadURL(`file://${__dirname}/layouts/main/ui.html`);
 
     mainWindow.on('closed', () => { mainWindow = null; });
 
