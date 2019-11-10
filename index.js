@@ -1,30 +1,31 @@
-const electron = require('electron');
+const fs = require("fs");
+const electron = require("electron");
 const { app, BrowserWindow, Menu } = electron;
 
-const { ipcMain } = require('electron')
+const { ipcMain } = require("electron");
 
 
 
 
 const template = [
     {
-        label: 'File',
+        label: "File",
         submenu: [
-            { role: 'reload' },
-            { role: 'forcereload' },
-            { type: 'separator' },
-            { role: 'toggledevtools' },
-            { type: 'separator' },
-            { role: 'close' }
+            { role: "reload" },
+            { role: "forcereload" },
+            { type: "separator" },
+            { role: "toggledevtools" },
+            { type: "separator" },
+            { role: "close" }
         ]
     },
-]
+];
 
 
 
-const menu = Menu.buildFromTemplate(template)
+const menu = Menu.buildFromTemplate(template);
 
-let mainWindow = null
+let mainWindow = null;
 
 
 
@@ -41,27 +42,27 @@ function createWindow() {
     });
 
     mainWindow.setMenu(menu);
-    mainWindow.setMenuBarVisibility(false)
+    mainWindow.setMenuBarVisibility(false);
 
 
     mainWindow.loadURL(`file://${__dirname}/layouts/main/ui.html`);
 
-    mainWindow.on('closed', () => { mainWindow = null; });
+    mainWindow.on("closed", () => { mainWindow = null; });
 
-    mainWindow.webContents.on('new-window', (e) => {
-        event.preventDefault()
-    })
+    mainWindow.webContents.on("new-window", (e) => {
+        e.preventDefault();
+    });
 
 
-    ipcMain.on('webview-event', (event, msg) => {
-        mainWindow.webContents.send('webview-event', msg)
-    })
+    ipcMain.on("webview-event", (event, msg) => {
+        mainWindow.webContents.send("webview-event", msg);
+    });
 
 }
 
-app.on('ready', createWindow);
+app.on("ready", createWindow);
 
 
-app.on('window-all-closed', function () {
+app.on("window-all-closed", function () {
     app.quit();
 });
