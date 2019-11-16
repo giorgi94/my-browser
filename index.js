@@ -1,10 +1,23 @@
 const fs = require("fs");
+const { join } = require("path");
 const electron = require("electron");
 const { app, BrowserWindow, Menu } = electron;
 
 const { ipcMain } = require("electron");
 
 
+const ReadConfig = () => {
+    try {
+        return JSON.parse(fs.readFileSync(join(__dirname, "data/config.json")));
+    } catch (e) {
+        console.log(e);
+        return {
+            "layout": {
+                "default": "main"
+            }
+        };
+    }
+};
 
 
 const template = [
@@ -44,8 +57,9 @@ function createWindow() {
     mainWindow.setMenu(menu);
     mainWindow.setMenuBarVisibility(false);
 
+    const config = ReadConfig();
 
-    mainWindow.loadURL(`file://${__dirname}/layouts/main/ui.html`);
+    mainWindow.loadURL(`file://${__dirname}/layouts/${config.layout.default}/ui.html`);
 
     mainWindow.on("closed", () => { mainWindow = null; });
 

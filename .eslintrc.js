@@ -5,6 +5,9 @@ module.exports = {
         node: true,
         browser: true
     },
+    plugins: [
+        "vue"
+    ],
     parserOptions: {
         parser: 'babel-eslint',
         sourceType: 'module',
@@ -12,11 +15,20 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
+        'plugin:vue/recommended'
     ],
     globals: {
-        videojs: true
+        $root: true,
+        $config: true
     },
     rules: {
+        "vue/html-indent": ["error", 4, {
+            "attribute": 1,
+            "baseIndent": 1,
+            "closeBracket": 0,
+            "alignAttributesVertically": true,
+            "ignores": []
+        }],
         'no-console': 'off',
         'no-debugger': 'off',
         indent: ['error', 4],
