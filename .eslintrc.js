@@ -29,6 +29,9 @@ module.exports = {
             "alignAttributesVertically": true,
             "ignores": []
         }],
+        "vue/max-attributes-per-line": "off",
+        "vue/multiline-html-element-content-newline": "off",
+        "vue/singleline-html-element-content-newline": "off",
         'no-console': 'off',
         'no-debugger': 'off',
         indent: ['error', 4],

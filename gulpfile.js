@@ -1,14 +1,35 @@
 const { src, dest, series, parallel, watch } = require("gulp");
 
+// const rename = require("gulp-rename");
 const sass = require("gulp-sass");
 const sourcemaps = require("gulp-sourcemaps");
+const terser = require("gulp-terser");
 const vue = require("./plugins/gulp-vue");
+
+
+const CopyToLib = function () {
+    return src([
+        "./lib/*"
+    ]).pipe(dest("./dist/lib"));
+};
+
+const JsBuild = function () {
+    return src("./src/**/*.js")
+        .pipe(sourcemaps.init())
+        .pipe(terser())
+        .pipe(sourcemaps.write("./maps"))
+        .pipe(dest("./dist/bundles"));
+};
 
 const VueBuild = function () {
     return src("./src/**/*.vue")
+        .pipe(sourcemaps.init())
         .pipe(vue({}).on("error", vue.logError))
-        .pipe(dest("./dist/js"));
+        .pipe(terser())
+        .pipe(sourcemaps.write("./maps"))
+        .pipe(dest("./dist/bundles"));
 };
+
 
 const SassBuild = function () {
     return src("./assets/sass/main.sass")
@@ -23,11 +44,17 @@ const SassBuild = function () {
 const WatchBuild = function () {
     watch("./assets/sass/**/*.sass", series("sass"));
     watch("./src/**/*.vue", series("vue"));
+    watch("./src/**/*.js", series("js"));
+    watch("./includes/**/*.js", series("js"));
 };
 
+exports.js = JsBuild;
 exports.vue = VueBuild;
 exports.sass = SassBuild;
 exports.watch = WatchBuild;
 
+exports.copy = CopyToLib;
 
-exports.default = parallel(VueBuild, SassBuild);
+
+
+exports.default = parallel(JsBuild, VueBuild, SassBuild);

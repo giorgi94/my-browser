@@ -20,17 +20,20 @@ const gulpVue = (options, sync) => through.obj((file, enc, cb) => {
 
     file.basename = file.basename.replace(".vue", ".js");
 
+
+
     if (!file.contents.length) {
         return cb(null, file);
     }
 
     let content = file.contents.toString();
 
+
     try {
         file.contents = Buffer.from(transform(content), "utf-8");
         return cb(null, file);
     } catch (e) {
-        return cb(e.message);
+        return cb(e);
     }
 
 });
@@ -39,7 +42,13 @@ const gulpVue = (options, sync) => through.obj((file, enc, cb) => {
 gulpVue.sync = options => gulpVue(options, true);
 
 gulpVue.logError = function logError(error) {
-    const message = new PluginError("vue", error.message).toString();
+    let message = "";
+
+    if (typeof error === "string") {
+        message = new PluginError("vue", error).toString();
+    } else {
+        message = new PluginError("vue", error.message).toString();
+    }
     process.stderr.write(`${message}\n`);
     this.emit("end");
 };

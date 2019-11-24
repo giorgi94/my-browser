@@ -5,9 +5,11 @@
     "main": "index.js",
     "scripts": {
         "start": "electron index.js",
-        "build": "rollup -c",
-        "autobuild": "rollup -c -w",
-        "dev": "run-p start:dev autobuild"
+        "build": "gulp",
+        "build/css": "gulp sass",
+        "copy": "gulp copy",
+        "watch": "npm run build && gulp watch",
+        "clean": "rm -rf dist/*"
     },
     "keywords": [],
     "author": "",
@@ -28,6 +30,7 @@
         "gulp-rename": "^1.4.0",
         "gulp-sass": "^4.0.2",
         "gulp-sourcemaps": "^2.6.5",
+        "gulp-terser": "^1.2.0",
         "node-sass": "^4.13.0"
     }
 }
