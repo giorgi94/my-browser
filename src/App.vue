@@ -50,7 +50,11 @@ module.exports = {
     },
     data() {
         return {
-            tabs: {}
+            tabs: {
+                "HDwwm": {
+                    "title": "title"
+                }
+            }
         };
     },
     mounted () {

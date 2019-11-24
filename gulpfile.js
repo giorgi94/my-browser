@@ -7,12 +7,6 @@ const terser = require("gulp-terser");
 const vue = require("./plugins/gulp-vue");
 
 
-const CopyToLib = function () {
-    return src([
-        "./lib/*"
-    ]).pipe(dest("./dist/lib"));
-};
-
 const JsBuild = function () {
     return src("./src/**/*.js")
         .pipe(sourcemaps.init())
@@ -52,9 +46,5 @@ exports.js = JsBuild;
 exports.vue = VueBuild;
 exports.sass = SassBuild;
 exports.watch = WatchBuild;
-
-exports.copy = CopyToLib;
-
-
 
 exports.default = parallel(JsBuild, VueBuild, SassBuild);

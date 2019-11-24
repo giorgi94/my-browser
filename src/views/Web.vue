@@ -1,6 +1,11 @@
 <template>
     <div class="web-page">
-        <h1>{{ title }} #{{ id }}</h1>
+        <div class="web-toolbar">
+            <span>tools</span>
+        </div>
+        <div class="web-wrapper">
+            <webview src="https://youtube.com/" />
+        </div>
     </div>
 </template>
 
