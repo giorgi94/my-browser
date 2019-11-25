@@ -2,13 +2,13 @@
     <div>
         <b-card no-body class="border-0">
             <b-tabs card>
-                <b-tab title="Home" active>
+                <!-- <b-tab title="Home" active>
                     <b-card-text>
                         <Home />
                     </b-card-text>
-                </b-tab>
+                </b-tab>-->
 
-                <b-tab v-for="tab in tablist" :key="tab.id">
+                <b-tab v-for="tab in tablist" :key="tab.id" class="tab-web-content">
                     <div slot="title">
                         <span>{{ tab.title }}</span>
                     </div>
