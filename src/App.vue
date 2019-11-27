@@ -1,14 +1,14 @@
 <template>
     <div>
         <b-card no-body class="border-0">
-            <b-tabs card>
+            <b-tabs card class="app-tabs">
                 <!-- <b-tab title="Home" active>
                     <b-card-text>
                         <Home />
                     </b-card-text>
                 </b-tab>-->
 
-                <b-tab v-for="tab in tablist" :key="tab.id" class="tab-web-content">
+                <b-tab v-for="tab in tablist" :key="tab.id" class="tab-web-content border-0">
                     <div slot="title">
                         <span>{{ tab.title }}</span>
                     </div>
