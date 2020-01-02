@@ -36,12 +36,20 @@
                         <b-button>
                             <i class="fas fa-bars" />
                         </b-button>
+                        <b-button>
+                            <i class="fas fa-expand"></i>
+                        </b-button>
                     </b-button-group>
                 </div>
             </b-row>
         </div>
         <div class="web-wrapper">
-            <webview ref="view" src="https://youtube.com/" />
+            <webview
+                class="web-view"
+                ref="view"
+                @did-finish-load="Loaded"
+                src="https://youtube.com/"
+            />
         </div>
     </div>
 </template>
@@ -61,16 +69,16 @@ module.exports = {
         };
     },
     mounted () {
-        this.adjustHeight();
+        const view = this.$refs.view
+
     },
     methods: {
-        adjustHeight () {
-            setTimeout(() => {
-                let view = this.$refs.view;
-                let rect = view.getBoundingClientRect();
-                let top = rect.top;
-                view.style.height = `calc(100vh - ${top}px)`;
-            }, 1000);
+        Loaded() {
+            const view = this.$refs.view
+            const title = view.getTitle()
+
+            this.$refs.location.localValue = view.getURL()
+            this.$emit('change-title', {id: this.id, title})
         },
         GoBack() {
             const view = this.$refs.view;
@@ -92,7 +100,7 @@ module.exports = {
                 url = "http://" + url;
             }
 
-            view.loadURL(url);
+            view.loadURL(url).catch(e=>console.log(e));
         },
         ToggleVolume () {
 

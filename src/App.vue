@@ -2,24 +2,32 @@
     <div>
         <b-card no-body class="border-0">
             <b-tabs card class="app-tabs">
-                <!-- <b-tab title="Home" active>
+                <b-tab title="Bookmarks" active>
+                    <div slot="title">
+                        <span>Bookmarks</span>
+                    </div>
                     <b-card-text>
                         <Home />
                     </b-card-text>
-                </b-tab>-->
+                </b-tab>
 
                 <b-tab v-for="tab in tablist" :key="tab.id" class="tab-web-content border-0">
                     <div slot="title">
-                        <span>{{ tab.title }}</span>
+                        <div class="tab-item">
+                            <span class="mr-3" :title="tab.title">{{ tab.title }}</span>
+                            <span class="tab-close" title="close" @click="tabClose(tab.id)">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
                     </div>
                     <b-card-text>
-                        <Web :id="tab.id" />
+                        <Web :id="tab.id" @change-title="setTabTitle" />
                     </b-card-text>
                 </b-tab>
 
                 <div slot="tabs-end">
-                    <b-nav-item href="#" @click.prevent="newTab">
-                        <b>+</b>
+                    <b-nav-item href="#" @click.prevent="tabAdd">
+                        <i class="tab-add fas fa-plus-square"></i>
                     </b-nav-item>
                 </div>
             </b-tabs>
@@ -50,11 +58,7 @@ module.exports = {
     },
     data() {
         return {
-            tabs: {
-                "HDwwm": {
-                    "title": "title"
-                }
-            }
+            tabs: {}
         };
     },
     mounted () {
@@ -70,20 +74,21 @@ module.exports = {
             }
             return result;
         },
-        closeTab(x) {
-            for (let i = 0; i < this.tabs.length; i++) {
-                if (this.tabs[i] === x) {
-                    this.tabs.splice(i, 1);
-                }
-            }
+        tabClose(id) {
+            this.$delete(this.tabs, id)
         },
-        newTab() {
+        tabAdd() {
             const id = this.makeid(5);
 
             this.$set(this.tabs, id, {
                 "title": `Tab: ${id}`
             });
 
+        },
+        setTabTitle({ id, title }) {
+            this.$set(this.tabs, id, {
+                title
+            });
         }
     }
 };
