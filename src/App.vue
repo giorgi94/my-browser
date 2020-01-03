@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-card no-body class="border-0">
-            <b-tabs card class="app-tabs">
+            <b-tabs card class="app-tabs" v-model="activTabStep">
                 <b-tab title="Bookmarks" active>
                     <div slot="title">
                         <span>Bookmarks</span>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <b-card-text>
-                        <Web :id="tab.id" @change-title="setTabTitle" />
+                        <Web :id="tab.id" :homepage="tab.homepage" @change-title="setTabTitle" />
                     </b-card-text>
                 </b-tab>
 
@@ -58,6 +58,7 @@ module.exports = {
     },
     data() {
         return {
+            activTabStep: 0,
             tabs: {}
         };
     },
@@ -81,7 +82,8 @@ module.exports = {
             const id = this.makeid(5);
 
             this.$set(this.tabs, id, {
-                "title": `Tab: ${id}`
+                "title": `Tab: ${id}`,
+                "homepage": "https://youtube.com/"
             });
 
         },

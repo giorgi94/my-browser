@@ -34,14 +34,16 @@ const transform = (vuetemplate) => {
 
     let script_template = lines.slice(script_start_ind, script_end_ind + 1).join("\n")
         .replace(/<script.*?>/, "")
-        .replace("</script>", "").trim();
+        .replace("</script>", "").trim()
+
 
     let script_module = script_template.match(/module.exports\s*=\s*\{/)[0];
 
+    template = template.replace(/`/g, '\\`').replace(/\$/g, '\\$')
+
+
     script_template = script_template
         .replace(script_module, script_module + `\n    template: \`${template}\`,`);
-
-    // let result = `const template = \`${template}\`;\n\n\n` + script_template;
 
     return script_template;
 };

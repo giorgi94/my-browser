@@ -26,12 +26,10 @@
                 <div class="mx-2">
                     <b-button-group>
                         <b-button @click="ToggleVolume">
-                            <i class="fas fa-volume-up" />
-                            <!-- <i class="fas fa-volume-mute" /> -->
+                            <i :class="`fas fa-volume-${muted ? 'mute': 'up'}`" />
                         </b-button>
                         <b-button @click="MakeBookmark">
-                            <i class="far fa-star" />
-                            <!-- <i class="fas fa-star" /> -->
+                            <i :class="bookmarked ? 'fas fa-star': 'far fa-star'" />
                         </b-button>
                         <b-button>
                             <i class="fas fa-bars" />
@@ -43,13 +41,8 @@
                 </div>
             </b-row>
         </div>
-        <div class="web-wrapper">
-            <webview
-                class="web-view"
-                ref="view"
-                @did-finish-load="Loaded"
-                src="https://youtube.com/"
-            />
+        <div :class="`web-wrapper`">
+            <webview class="web-view" ref="view" @did-finish-load="Loaded" />
         </div>
     </div>
 </template>
@@ -60,17 +53,24 @@ module.exports = {
         id: {
             type: String,
             required: true
+        },
+        homepage: {
+            type: String,
+            required: true
         }
     },
     data() {
         return {
             view: null,
+            muted: false,
+            isfullview: false,
+            bookmarked: false,
             title: "Hello Web Page"
         };
     },
     mounted () {
         const view = this.$refs.view
-
+        view.src = this.homepage
     },
     methods: {
         Loaded() {
@@ -103,6 +103,13 @@ module.exports = {
             view.loadURL(url).catch(e=>console.log(e));
         },
         ToggleVolume () {
+            const view = this.$refs.view
+            const ismuted = view.isAudioMuted()
+            view.setAudioMuted(!ismuted)
+
+            this.muted = !ismuted
+        },
+        ToggleFullView () {
 
         },
         MakeBookmark () {
