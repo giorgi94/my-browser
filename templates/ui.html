@@ -74,6 +74,15 @@
             readConfig() {
                 return this.read('config.json')
             }
+
+            dumpHistory(url) {
+                let time = new Date().getTime()
+                fs.appendFile(join(databasedir, 'history.txt'), `${time} - ${url}\n`, (err) => {
+                    if (err) {
+                        console.error(err)
+                    }
+                })
+            }
         }
 
         window.database = new Database()

@@ -85,6 +85,8 @@
 </template>
 
 <script>
+
+
 module.exports = {
     props: {
         id: {
@@ -121,8 +123,12 @@ module.exports = {
         Loaded() {
             const view = this.$refs.view;
             const title = view.getTitle();
-            this.$refs.location.localValue = view.getURL();
+            const url = view.getURL();
+
+            this.$refs.location.localValue = url;
             this.$emit("change-title", {id: this.id, title});
+
+            database.dumpHistory(url);
         },
         GoBack() {
             const view = this.$refs.view;
@@ -164,7 +170,7 @@ module.exports = {
             this.$refs.view.openDevTools();
         },
         GoToHomepage () {
-
+            this.$refs.view.loadURL(database.config.homepage);
         },
         MakeBookmark () {
 
