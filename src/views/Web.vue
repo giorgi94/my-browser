@@ -11,6 +11,10 @@
                         <b-button @click="GoForward">
                             <i class="far fa-arrow-alt-circle-right" />
                         </b-button>
+
+                        <b-button @click="Reload">
+                            <i class="fas fa-retweet"></i>
+                        </b-button>
                     </b-button-group>
                 </div>
 
@@ -18,7 +22,11 @@
                     <b-button-group class="w-100">
                         <b-form-input ref="location" type="text" @keyup.enter="LoadUrl" />
                         <b-button @click="LoadUrl">
-                            <i class="far fa-arrow-alt-circle-right" />
+                            <i v-if="!loading" class="far fa-arrow-alt-circle-right" />
+                            <i v-else class="fas fa-spinner"></i>
+                        </b-button>
+                        <b-button @click="OpenDevTools">
+                            <i class="fas fa-code"></i>
                         </b-button>
                     </b-button-group>
                 </div>
@@ -31,18 +39,39 @@
                         <b-button @click="MakeBookmark">
                             <i :class="bookmarked ? 'fas fa-star': 'far fa-star'" />
                         </b-button>
+
                         <b-button>
                             <i class="fas fa-bars" />
                         </b-button>
-                        <b-button>
+                        <b-button @click="ToggleFullView">
                             <i class="fas fa-expand"></i>
                         </b-button>
                     </b-button-group>
                 </div>
             </b-row>
         </div>
-        <div :class="`web-wrapper`">
-            <webview class="web-view" ref="view" @did-finish-load="Loaded" />
+        <div class="web-wrapper" :class="{ 'full-view': isfullview }">
+            <div class="full-view-widgets left">
+                <b-button-group>
+                    <b-button @click="ToggleVolume">
+                        <i :class="`fas fa-volume-${muted ? 'mute': 'up'}`" />
+                    </b-button>
+                </b-button-group>
+            </div>
+            <div class="full-view-widgets right">
+                <b-button-group>
+                    <b-button @click="ToggleFullView">
+                        <i class="fas fa-expand"></i>
+                    </b-button>
+                </b-button-group>
+            </div>
+            <webview
+                class="web-view"
+                ref="view"
+                @did-finish-load="Loaded"
+                @did-start-loading="loading = true"
+                @did-stop-loading="loading = false"
+            />
         </div>
     </div>
 </template>
@@ -65,18 +94,22 @@ module.exports = {
             muted: false,
             isfullview: false,
             bookmarked: false,
+            loading: false,
             title: "Hello Web Page"
         };
     },
     mounted () {
         const view = this.$refs.view
         view.src = this.homepage
+
+        setTimeout(()=>{
+            this.ToggleVolume()
+        }, 1000)
     },
     methods: {
         Loaded() {
             const view = this.$refs.view
             const title = view.getTitle()
-
             this.$refs.location.localValue = view.getURL()
             this.$emit('change-title', {id: this.id, title})
         },
@@ -102,6 +135,10 @@ module.exports = {
 
             view.loadURL(url).catch(e=>console.log(e));
         },
+        Reload() {
+            const view = this.$refs.view;
+            view.reload()
+        },
         ToggleVolume () {
             const view = this.$refs.view
             const ismuted = view.isAudioMuted()
@@ -110,7 +147,10 @@ module.exports = {
             this.muted = !ismuted
         },
         ToggleFullView () {
-
+            this.isfullview = !this.isfullview
+        },
+        OpenDevTools() {
+            const view = this.$refs.view.openDevTools()
         },
         MakeBookmark () {
 

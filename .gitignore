@@ -4,6 +4,9 @@
 *.sqlite3
 *.desktop
 
+db/
+database/
+
 .DS_Store
 
 .vscode/

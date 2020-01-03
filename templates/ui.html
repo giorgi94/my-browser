@@ -24,6 +24,14 @@
     <script src="../lib/bootstrap-vue.min.js"></script>
 
     <script>
+        const {
+            dirname,
+            join
+        } = require('path')
+
+        window.basedir = dirname(__dirname)
+        window.database = join(basedir, 'database')
+
         require('../dist/bundles/index.js')
     </script>
 

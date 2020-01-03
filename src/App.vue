@@ -60,10 +60,12 @@ module.exports = {
         return {
             activTabStep: 0,
             tabs: {}
-        };
+        }
     },
     mounted () {
         window.vm = this;
+
+        this.activTabStep = 1
     },
     methods: {
         makeid(length) {
