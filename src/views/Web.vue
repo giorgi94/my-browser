@@ -13,20 +13,28 @@
                         </b-button>
 
                         <b-button @click="Reload">
-                            <i class="fas fa-retweet"></i>
+                            <i class="fas fa-retweet" />
                         </b-button>
                     </b-button-group>
                 </div>
 
                 <div class="flex-fill">
                     <b-button-group class="w-100">
-                        <b-form-input ref="location" type="text" @keyup.enter="LoadUrl" />
+                        <b-button @click="GoToHomepage">
+                            <i class="fas fa-hotel" />
+                        </b-button>
+                        <b-form-input
+                            ref="location"
+                            class="rounded-0"
+                            type="text"
+                            @keyup.enter="LoadUrl"
+                        />
                         <b-button @click="LoadUrl">
                             <i v-if="!loading" class="far fa-arrow-alt-circle-right" />
-                            <i v-else class="fas fa-spinner"></i>
+                            <i v-else class="fas fa-spinner" />
                         </b-button>
                         <b-button @click="OpenDevTools">
-                            <i class="fas fa-code"></i>
+                            <i class="fas fa-code" />
                         </b-button>
                     </b-button-group>
                 </div>
@@ -44,7 +52,7 @@
                             <i class="fas fa-bars" />
                         </b-button>
                         <b-button @click="ToggleFullView">
-                            <i class="fas fa-expand"></i>
+                            <i class="fas fa-expand" />
                         </b-button>
                     </b-button-group>
                 </div>
@@ -61,13 +69,13 @@
             <div class="full-view-widgets right">
                 <b-button-group>
                     <b-button @click="ToggleFullView">
-                        <i class="fas fa-expand"></i>
+                        <i class="fas fa-expand" />
                     </b-button>
                 </b-button-group>
             </div>
             <webview
-                class="web-view"
                 ref="view"
+                class="web-view"
                 @did-finish-load="Loaded"
                 @did-start-loading="loading = true"
                 @did-stop-loading="loading = false"
@@ -99,19 +107,22 @@ module.exports = {
         };
     },
     mounted () {
-        const view = this.$refs.view
-        view.src = this.homepage
+        const view = this.$refs.view;
+        view.src = this.homepage;
 
-        setTimeout(()=>{
-            this.ToggleVolume()
-        }, 1000)
+        if (database.config.muted) {
+            setTimeout(()=>{
+                this.ToggleVolume();
+            }, 1000);
+        }
+
     },
     methods: {
         Loaded() {
-            const view = this.$refs.view
-            const title = view.getTitle()
-            this.$refs.location.localValue = view.getURL()
-            this.$emit('change-title', {id: this.id, title})
+            const view = this.$refs.view;
+            const title = view.getTitle();
+            this.$refs.location.localValue = view.getURL();
+            this.$emit("change-title", {id: this.id, title});
         },
         GoBack() {
             const view = this.$refs.view;
@@ -137,20 +148,23 @@ module.exports = {
         },
         Reload() {
             const view = this.$refs.view;
-            view.reload()
+            view.reload();
         },
         ToggleVolume () {
-            const view = this.$refs.view
-            const ismuted = view.isAudioMuted()
-            view.setAudioMuted(!ismuted)
+            const view = this.$refs.view;
+            const ismuted = view.isAudioMuted();
+            view.setAudioMuted(!ismuted);
 
-            this.muted = !ismuted
+            this.muted = !ismuted;
         },
         ToggleFullView () {
-            this.isfullview = !this.isfullview
+            this.isfullview = !this.isfullview;
         },
-        OpenDevTools() {
-            const view = this.$refs.view.openDevTools()
+        OpenDevTools () {
+            this.$refs.view.openDevTools();
+        },
+        GoToHomepage () {
+
         },
         MakeBookmark () {
 

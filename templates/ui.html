@@ -24,13 +24,59 @@
     <script src="../lib/bootstrap-vue.min.js"></script>
 
     <script>
+        const fs = require('fs')
         const {
             dirname,
             join
         } = require('path')
 
         window.basedir = dirname(__dirname)
-        window.database = join(basedir, 'database')
+        window.databasedir = join(basedir, 'database')
+
+
+        class Database {
+            constructor() {
+                if (!fs.existsSync(databasedir)) {
+                    fs.mkdirSync(databasedir)
+                    this.write('config.json', {})
+                }
+
+                this.config = this.readConfig()
+            }
+
+            read(name, json = true) {
+                try {
+                    let text = fs.readFileSync(join(databasedir, name))
+                    if (json) {
+                        return JSON.parse(text)
+                    }
+                    return text
+                } catch (e) {
+                    console.error(e)
+                    return null
+                }
+            }
+
+            write(name, data, json = true) {
+                try {
+
+                    let text = json ? JSON.stringify(data, null, 4) : data
+
+                    fs.writeFileSync(join(databasedir, name), text, "utf8")
+
+
+                } catch (e) {
+                    console.error(e)
+                    return null
+                }
+            }
+
+            readConfig() {
+                return this.read('config.json')
+            }
+        }
+
+        window.database = new Database()
 
         require('../dist/bundles/index.js')
     </script>

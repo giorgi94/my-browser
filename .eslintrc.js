@@ -22,6 +22,7 @@ module.exports = {
         $config: true
     },
     rules: {
+        "no-undef": "off",
         "vue/html-indent": ["error", 4, {
             "attribute": 1,
             "baseIndent": 1,

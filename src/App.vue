@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-card no-body class="border-0">
-            <b-tabs card class="app-tabs" v-model="activTabStep">
+            <b-tabs v-model="activTabStep" card class="app-tabs">
                 <b-tab title="Bookmarks" active>
                     <div slot="title">
                         <span>Bookmarks</span>
@@ -16,7 +16,7 @@
                         <div class="tab-item">
                             <span class="mr-3" :title="tab.title">{{ tab.title }}</span>
                             <span class="tab-close" title="close" @click="tabClose(tab.id)">
-                                <i class="fas fa-times"></i>
+                                <i class="fas fa-times" />
                             </span>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
 
                 <div slot="tabs-end">
                     <b-nav-item href="#" @click.prevent="tabAdd">
-                        <i class="tab-add fas fa-plus-square"></i>
+                        <i class="tab-add fas fa-plus-square" />
                     </b-nav-item>
                 </div>
             </b-tabs>
@@ -59,13 +59,18 @@ module.exports = {
     data() {
         return {
             activTabStep: 0,
-            tabs: {}
-        }
+            tabs: {
+                "sdfjiafe": {
+                    "title": "",
+                    "homepage": database.config.homepage || "https://google.com"
+                }
+            }
+        };
     },
     mounted () {
         window.vm = this;
 
-        this.activTabStep = 1
+        this.activTabStep = 1;
     },
     methods: {
         makeid(length) {
@@ -78,7 +83,7 @@ module.exports = {
             return result;
         },
         tabClose(id) {
-            this.$delete(this.tabs, id)
+            this.$delete(this.tabs, id);
         },
         tabAdd() {
             const id = this.makeid(5);
