@@ -21,7 +21,12 @@
                         </div>
                     </div>
                     <b-card-text>
-                        <Web :id="tab.id" :homepage="tab.homepage" @change-title="setTabTitle" />
+                        <Web
+                            :id="tab.id"
+                            ref="web"
+                            :homepage="tab.homepage"
+                            @change-title="setTabTitle"
+                        />
                     </b-card-text>
                 </b-tab>
 
@@ -59,20 +64,26 @@ module.exports = {
     data() {
         return {
             activTabStep: 0,
-            tabs: {
-                "sdfjiafe": {
-                    "title": "",
-                    "homepage": database.config.homepage || "https://google.com"
-                }
-            }
+            tabs: {}
         };
     },
     mounted () {
         window.vm = this;
 
-        this.activTabStep = 1;
+        this.init();
+
     },
     methods: {
+        init () {
+
+            let tabs = database.read("tabs.json");
+
+            if (tabs) {
+                this.tabs = tabs;
+            }
+
+
+        },
         makeid(length) {
             var result = "";
             var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -90,7 +101,7 @@ module.exports = {
 
             this.$set(this.tabs, id, {
                 "title": `Tab: ${id}`,
-                "homepage": "https://youtube.com/"
+                "homepage": database.config.homepage || "https://google.com"
             });
 
         },
@@ -98,6 +109,28 @@ module.exports = {
             this.$set(this.tabs, id, {
                 title
             });
+
+            this.dumpTabs();
+        },
+        dumpTabs() {
+            const webs = this.$refs["web"].reduce((m,e)=>{
+                m[e.id] = e;
+                return m;
+            }, {});
+
+            let tabs = Object.entries(this.tabs).reduce((m, [id, tab]) => {
+                let web = webs[id];
+
+                m[id] = {
+                    ...tab,
+                    title: web.GetTitle(),
+                    homepage: web.GetURL()
+                };
+
+                return m;
+            }, {});
+
+            database.dumpTabs(tabs);
         }
     }
 };

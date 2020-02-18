@@ -26,3 +26,5 @@ package-lock.json
 
 layouts/*
 !layouts/main
+
+handlers/parsers

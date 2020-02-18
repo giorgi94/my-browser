@@ -83,6 +83,10 @@
                     }
                 })
             }
+
+            dumpTabs(tabs) {
+                this.write('tabs.json', tabs)
+            }
         }
 
         window.database = new Database()

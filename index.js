@@ -25,6 +25,14 @@ const menu = Menu.buildFromTemplate(template);
 
 let mainWindow = null;
 
+const blockUrl = (url) => {
+
+    // if (url.match(/ad/)) {
+    //     return true;
+    // }
+
+    return false;
+};
 
 
 function createWindow() {
@@ -48,6 +56,18 @@ function createWindow() {
 
     mainWindow.webContents.on("new-window", (e) => {
         e.preventDefault();
+    });
+
+    mainWindow.webContents.session.webRequest.onBeforeRequest({ urls: ["*://*/*"]}, (details, cb) => {
+        let url = details.url;
+
+        let shouldBeBlocked = blockUrl(url);
+
+        if (shouldBeBlocked) {
+            cb({ cancel: true });
+        } else {
+            cb({ cancel: false });
+        }
     });
 
 

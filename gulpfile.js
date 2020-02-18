@@ -19,7 +19,7 @@ const VueBuild = function () {
     return src("./src/**/*.vue")
         .pipe(sourcemaps.init())
         .pipe(vue({}).on("error", vue.logError))
-        .pipe(terser())
+        // .pipe(terser())
         .pipe(sourcemaps.write("./maps"))
         .pipe(dest("./dist/bundles"));
 };

@@ -58,7 +58,7 @@
                 </div>
             </b-row>
         </div>
-        <div class="web-wrapper" :class="{ 'full-view': isfullview }">
+        <div class="web-wrapper">
             <div class="full-view-widgets left">
                 <b-button-group>
                     <b-button @click="ToggleVolume">
@@ -108,6 +108,15 @@ module.exports = {
             title: "Hello Web Page"
         };
     },
+    watch: {
+        isfullview (value) {
+            if (value) {
+                document.body.classList.add("full-view");
+            } else {
+                document.body.classList.remove("full-view");
+            }
+        }
+    },
     mounted () {
         const view = this.$refs.view;
         view.src = this.homepage;
@@ -121,14 +130,19 @@ module.exports = {
     },
     methods: {
         Loaded() {
-            const view = this.$refs.view;
-            const title = view.getTitle();
-            const url = view.getURL();
+            const title = this.GetTitle();
+            const url = this.GetURL();
 
             this.$refs.location.localValue = url;
             this.$emit("change-title", {id: this.id, title});
 
             database.dumpHistory(url);
+        },
+        GetTitle () {
+            return this.$refs.view.getTitle();
+        },
+        GetURL () {
+            return this.$refs.view.getURL();
         },
         GoBack() {
             const view = this.$refs.view;
