@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const electron = require("electron");
 const { app, BrowserWindow, Menu } = electron;
 
@@ -27,9 +29,24 @@ let mainWindow = null;
 
 const blockUrl = (url) => {
 
-    // if (url.match(/ad/)) {
-    //     return true;
-    // }
+    let data = fs.readFileSync(path.join(__dirname, "database/block.txt"), "utf8");
+    data = data.split("\n").map(e=>e.trim()).filter(e=>e.length>0);
+
+    for (let item of data) {
+        if (url.indexOf(item)!==-1) {
+            console.log(url);
+            return true;
+        }
+    }
+
+    if (url.indexOf("?")!==-1) {
+        let search = url.split("?")[1];
+        if (search.length > 500) {
+            return true;
+        }
+    }
+
+    console.log(url);
 
     return false;
 };
