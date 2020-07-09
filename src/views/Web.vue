@@ -79,6 +79,7 @@
                 @did-finish-load="Loaded"
                 @did-start-loading="loading = true"
                 @did-stop-loading="loading = false"
+                @did-get-response-details="GetResponseDetails"
             />
         </div>
     </div>
@@ -188,6 +189,9 @@ module.exports = {
         },
         MakeBookmark () {
 
+        },
+        GetResponseDetails(details) {
+            console.log(details)
         }
     }
 };
